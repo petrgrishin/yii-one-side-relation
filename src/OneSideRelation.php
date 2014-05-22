@@ -9,10 +9,12 @@ namespace PetrGrishin\OneSideRelation;
 use CActiveRecordBehavior as Behavior;
 
 class OneSideRelation extends Behavior {
+    const BEHAVIOR_STORAGE = 'arrayFieldStorage';
+
     /** @var  string */
     private $_className;
     /** @var  string */
-    private $_fieldName;
+    private $_fieldNameStorage;
 
     /**
      * @return string
@@ -33,16 +35,16 @@ class OneSideRelation extends Behavior {
     /**
      * @return string
      */
-    public function getFieldName() {
-        return $this->_fieldName;
+    public function getFieldNameStorage() {
+        return $this->_fieldNameStorage;
     }
 
     /**
      * @param string $fieldName
      * @return $this
      */
-    public function setFieldName($fieldName) {
-        $this->_fieldName = $fieldName;
+    public function setFieldNameStorage($fieldName) {
+        $this->_fieldNameStorage = $fieldName;
         return $this;
     }
 
@@ -53,6 +55,17 @@ class OneSideRelation extends Behavior {
 
     protected function init() {
 
+    }
+
+    protected function getStorage() {
+        if (!$storage = $this->asa(self::BEHAVIOR_STORAGE)) {
+            $storage = $this->attachBehavior(self::BEHAVIOR_STORAGE, array(
+                'class' => \PetrGrishin\ArrayField\ArrayFieldBehavior::className(),
+                'model' => $this->getOwner(),
+                'fieldNameStorage' => $this->getFieldNameStorage()
+            ));
+        }
+        return $storage;
     }
 }
  

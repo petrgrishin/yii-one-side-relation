@@ -4,6 +4,7 @@
     "license": "MIT",
     "require": {
         "php": ">=5.3.0",
+        "petrgrishin/yii-array-field": "~1.0",
         "yiisoft/yii": "*"
     },
     "minimum-stability": "dev",
