@@ -1,0 +1,24 @@
+{
+    "name": "petrgrishin/yii-one-side-relation",
+    "description": "One side relation behavior",
+    "license": "MIT",
+    "require": {
+        "php": ">=5.3.0",
+        "yiisoft/yii": "*"
+    },
+    "minimum-stability": "dev",
+    "require-dev": {
+        "league/phpunit-coverage-listener": "~1.0"
+    },
+    "authors": [
+        {
+            "name": "Petr Grishin",
+            "email": "petr.grishin@grishini.ru"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "PetrGrishin\\OneSideRelation\\": "src/"
+        }
+    }
+}
