@@ -5,7 +5,7 @@
 
 class OneSideRelationTest extends PHPUnit_Framework_TestCase {
 
-    public function test() {
+    public function testGetStorage() {
         /** @var \PHPUnit_Framework_MockObject_MockObject|CActiveRecord $model */
         $model = $this
             ->getMockBuilder('CActiveRecord')
@@ -31,4 +31,25 @@ class OneSideRelationTest extends PHPUnit_Framework_TestCase {
         $behavior->getStorage()->setArray(array(1, 2, 3));
         $this->assertEquals(array(1, 2, 3), $behavior->getStorage()->getArray());
     }
+
+    public function testGetRelated() {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|CActiveRecord $model */
+        $model = $this
+            ->getMockBuilder('CActiveRecord')
+            ->disableOriginalConstructor()
+            ->setMethods(array('__get'))
+            ->getMock();
+
+        $model
+            ->expects($this->any())
+            ->method('__get')
+            ->will($this->returnCallback(function ($name) {
+                return array('data' => '[1]');
+            }))->with('attributes');
+
+        $behavior = new \PetrGrishin\OneSideRelation\OneSideRelation;
+        $behavior->setFieldNameStorage('data');
+        $behavior->attach($model);
+    }
+
 }
