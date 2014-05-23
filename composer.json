@@ -7,7 +7,6 @@
         "petrgrishin/yii-array-field": "~1.0",
         "yiisoft/yii": "*"
     },
-    "minimum-stability": "dev",
     "require-dev": {
         "league/phpunit-coverage-listener": "~1.0"
     },
@@ -21,5 +20,13 @@
         "psr-4": {
             "PetrGrishin\\OneSideRelation\\": "src/"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PetrGrishin\\ArrayField\\": "src/"
+        },
+        "files": [
+            "vendor/yiisoft/yii/framework/YiiBase.php"
+        ]
     }
 }
