@@ -6,8 +6,7 @@
 class OneSideRelationTest extends PHPUnit_Framework_TestCase {
 
     public function test() {
-
-        /** @var \PHPUnit_Framework_MockObject_MockObject|ActiveRecord $model */
+        /** @var \PHPUnit_Framework_MockObject_MockObject|CActiveRecord $model */
         $model = $this
             ->getMockBuilder('CActiveRecord')
             ->disableOriginalConstructor()
@@ -18,19 +17,18 @@ class OneSideRelationTest extends PHPUnit_Framework_TestCase {
             ->expects($this->any())
             ->method('__get')
             ->will($this->returnCallback(function ($name) {
-                return '{}';
+                return '[]';
             }))->with('attributes');
 
         $model
             ->expects($this->once())
             ->method('setAttribute')
-            ->with('data', '{"a":{"b":true}}');
+            ->with('data', '[1,2,3]');
 
         $behavior = new \PetrGrishin\OneSideRelation\OneSideRelation;
         $behavior->setFieldNameStorage('data');
         $behavior->attach($model);
-        $behavior->getStorage()->setArray(array('a' => array('b' => true)));
-        $this->assertEquals(array('a' => array('b' => true)), $behavior->getStorage()->getArray());
-
+        $behavior->getStorage()->setArray(array(1, 2, 3));
+        $this->assertEquals(array(1, 2, 3), $behavior->getStorage()->getArray());
     }
 }

@@ -62,10 +62,9 @@ class OneSideRelation extends Behavior {
      * @return ArrayFieldBehavior
      */
     public function getStorage() {
-        if (!$storage = $this->asa(self::BEHAVIOR_NAME_STORAGE)) {
-            $storage = $this->attachBehavior(self::BEHAVIOR_NAME_STORAGE, array(
+        if (!$storage = $this->getOwner()->asa(self::BEHAVIOR_NAME_STORAGE)) {
+            $storage = $this->getOwner()->attachBehavior(self::BEHAVIOR_NAME_STORAGE, array(
                 'class' => ArrayFieldBehavior::className(),
-                'model' => $this->getOwner(),
                 'fieldNameStorage' => $this->getFieldNameStorage()
             ));
         }
