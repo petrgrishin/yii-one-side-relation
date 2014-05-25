@@ -6,6 +6,7 @@
 namespace PetrGrishin\OneSideRelation;
 
 
+use CActiveRecord as ActiveRecord;
 use CActiveRecordBehavior as Behavior;
 use PetrGrishin\ArrayField\ArrayFieldBehavior;
 use SebastianBergmann\Exporter\Exception;
@@ -17,9 +18,9 @@ class OneSideRelation extends Behavior {
     private $_relationModel;
     /** @var  string */
     private $_fieldNameStorage;
-    /** @var \CActiveRecord[]  */
+    /** @var ActiveRecord[]  */
     private $_models = array();
-    /** @var \CActiveRecord */
+    /** @var ActiveRecord */
     private $_relationFindModel;
 
     /**
@@ -72,10 +73,21 @@ class OneSideRelation extends Behavior {
         return $this->getStorage()->getArray();
     }
 
+    protected function setData(array $data) {
+        $this->getStorage()->setArray($data);
+        return $this;
+    }
+
     public function getRelated() {
         return array_filter(array_map(function ($pk) {
             return $this->getRelatedByPk($pk);
         }, $this->getData()));
+    }
+
+    public function addRelated(ActiveRecord $model) {
+        $this->_models[$model->id] = $model;
+        $this->saveData();
+        return $this;
     }
 
     protected function getRelatedByPk($pk) {
@@ -89,11 +101,11 @@ class OneSideRelation extends Behavior {
     }
 
     /**
-     * @return \CActiveRecord
+     * @return ActiveRecord
      */
     public function getRelationFindModel() {
         if (empty($this->_relationFindModel)) {
-            $this->_relationFindModel = \CActiveRecord::model($this->_relationModel);
+            $this->_relationFindModel = ActiveRecord::model($this->_relationModel);
         }
         return $this->_relationFindModel;
     }
@@ -101,6 +113,15 @@ class OneSideRelation extends Behavior {
     public function setRelationFindModel($model) {
         $this->_relationFindModel = $model;
         return $this;
+    }
+
+    protected function saveData() {
+        $this->setData(array_keys($this->_models));
+        return $this;
+    }
+
+    protected function beforeSave() {
+        $this->saveData();
     }
 }
  

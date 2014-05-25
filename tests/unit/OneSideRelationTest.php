@@ -72,4 +72,44 @@ class OneSideRelationTest extends PHPUnit_Framework_TestCase {
         $this->assertEquals(array(1, 2), $behavior->getRelated());
     }
 
+    public function testAddRelated() {
+        /** @var \PHPUnit_Framework_MockObject_MockObject|CActiveRecord $model */
+        $model = $this
+            ->getMockBuilder('CActiveRecord')
+            ->disableOriginalConstructor()
+            ->setMethods(array('getAttribute', 'setAttribute'))
+            ->getMock();
+        $model
+            ->expects($this->any())
+            ->method('getAttribute')
+            ->will($this->returnCallback(function ($name) {
+                return '[]';
+            }))->with('data');
+        $model
+            ->expects($this->once())
+            ->method('setAttribute')
+            ->with('data', '[1]');
+
+        /** @var \PHPUnit_Framework_MockObject_MockObject|TestRelationModel $testRelationModel */
+        $testRelationModel = $this
+            ->getMockBuilder('TestRelationModel')
+            ->disableOriginalConstructor()
+            ->setMethods(array('__get', 'getAttribute'))
+            ->getMock();
+        $testRelationModel
+            ->expects($this->any())
+            ->method('__get')
+            ->will($this->returnCallback(function ($name) {
+                return 1;
+            }))->with('id');
+
+        $behavior = new \PetrGrishin\OneSideRelation\OneSideRelation;
+        $behavior->setFieldNameStorage('data');
+        $behavior->attach($model);
+        $behavior->setRelationModel('TestRelationModel');
+        $this->assertEquals(array(), $behavior->getStorage()->getArray());
+        $behavior->addRelated($testRelationModel);
+        $this->assertEquals(array(1), $behavior->getStorage()->getArray());
+    }
+
 }
