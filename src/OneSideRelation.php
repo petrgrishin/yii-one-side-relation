@@ -121,7 +121,7 @@ class OneSideRelation extends Behavior {
         return $this;
     }
 
-    protected function beforeSave() {
+    protected function beforeSave($event) {
         $this->saveData();
     }
 }
