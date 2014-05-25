@@ -79,8 +79,9 @@ class OneSideRelation extends Behavior {
     }
 
     public function getRelated() {
-        return array_filter(array_map(function ($pk) {
-            return $this->getRelatedByPk($pk);
+        $that = $this;
+        return array_filter(array_map(function ($pk) use ($that) {
+            return $that->getRelatedByPk($pk);
         }, $this->getData()));
     }
 
