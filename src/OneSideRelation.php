@@ -91,7 +91,7 @@ class OneSideRelation extends Behavior {
         return $this;
     }
 
-    protected function getRelatedByPk($pk) {
+    public function getRelatedByPk($pk) {
         if (!in_array($pk, $this->getData())) {
             throw new Exception(sprintf('Not found related with pk `%s`', $pk));
         }
