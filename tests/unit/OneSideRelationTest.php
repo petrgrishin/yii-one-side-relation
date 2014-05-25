@@ -37,19 +37,20 @@ class OneSideRelationTest extends PHPUnit_Framework_TestCase {
         $model = $this
             ->getMockBuilder('CActiveRecord')
             ->disableOriginalConstructor()
-            ->setMethods(array('__get'))
+            ->setMethods(array('getAttribute'))
             ->getMock();
 
         $model
             ->expects($this->any())
-            ->method('__get')
+            ->method('getAttribute')
             ->will($this->returnCallback(function ($name) {
-                return array('data' => '[1]');
-            }))->with('attributes');
+                return '[1]';
+            }))->with('data');
 
         $behavior = new \PetrGrishin\OneSideRelation\OneSideRelation;
         $behavior->setFieldNameStorage('data');
         $behavior->attach($model);
+        $this->assertEquals(array(1), $behavior->getStorage()->getArray());
     }
 
 }
