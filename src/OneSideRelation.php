@@ -19,6 +19,8 @@ class OneSideRelation extends Behavior {
     private $_fieldNameStorage;
     /** @var \CActiveRecord[]  */
     private $_models = array();
+    /** @var \CActiveRecord */
+    private $_relationFindModel;
 
     /**
      * @return string
@@ -89,10 +91,16 @@ class OneSideRelation extends Behavior {
     /**
      * @return \CActiveRecord
      */
-    protected function getRelationFindModel() {
-        /** @var $className \CActiveRecord */
-        $className = $this->_relationModel;
-        return $className::model();
+    public function getRelationFindModel() {
+        if (empty($this->_relationFindModel)) {
+            $this->_relationFindModel = \CActiveRecord::model($this->_relationModel);
+        }
+        return $this->_relationFindModel;
+    }
+
+    public function setRelationFindModel($model) {
+        $this->_relationFindModel = $model;
+        return $this;
     }
 }
  
