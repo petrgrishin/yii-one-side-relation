@@ -132,6 +132,9 @@ class OneSideRelation extends Behavior {
     }
 
     protected function addRelatedRecord(ActiveRecord $record) {
+        if (!is_subclass_of($record, $this->getRelationModel())) {
+            throw new \Exception(printf('Record `%s` not instanceof `%s`', get_class($record), $this->getRelationModel()));
+        }
         $this->_models[$record->id] = $record;
         $this->saveData();
         return $this;
