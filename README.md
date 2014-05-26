@@ -29,7 +29,7 @@ use \PetrGrishin\OneSideRelation\OneSideRelation;
 class Model extends ActiveRecord {
     public function behaviors() {
         return array(
-            'arrayField' => array(
+            'testRelation' => array(
                 'class' => OneSideRelation::className(),
                 'fieldNameStorage' => 'data',
                 'relationModel' => RelationModel::className(),
@@ -38,4 +38,12 @@ class Model extends ActiveRecord {
     }
 
 }
+```
+
+#### Usage behavior
+```php
+$model = Model::find(1)->one();
+$relatedRecords = $model->testRelation->getRelated();
+$model->testRelation->addRelated(new RelationModel());
+$model->save();
 ```
