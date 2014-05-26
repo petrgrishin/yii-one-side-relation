@@ -85,9 +85,19 @@ class OneSideRelation extends Behavior {
         }, $this->getData()));
     }
 
-    public function addRelated(ActiveRecord $model) {
-        $this->_models[$model->id] = $model;
-        $this->saveData();
+    public function addRelated($records) {
+        if (!is_array($records)) {
+            $records = array($records);
+        }
+        foreach ($records as $record) {
+            $this->addRelatedRecord($record);
+        }
+        return $this;
+    }
+
+    public function setRelated($records) {
+        $this->reset();
+        $this->addRelated($records);
         return $this;
     }
 
@@ -99,6 +109,11 @@ class OneSideRelation extends Behavior {
             $this->_models[$pk] = $this->getRelationFindModel()->findByPk($pk);
         }
         return $this->_models[$pk];
+    }
+
+    public function reset() {
+        $this->_models = array();
+        return $this;
     }
 
     /**
@@ -113,6 +128,12 @@ class OneSideRelation extends Behavior {
 
     public function setRelationFindModel($model) {
         $this->_relationFindModel = $model;
+        return $this;
+    }
+
+    protected function addRelatedRecord(ActiveRecord $record) {
+        $this->_models[$record->id] = $record;
+        $this->saveData();
         return $this;
     }
 
