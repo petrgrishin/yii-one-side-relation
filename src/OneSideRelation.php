@@ -26,6 +26,13 @@ class OneSideRelation extends Behavior {
     /**
      * @return string
      */
+    public static function className() {
+        return get_called_class();
+    }
+
+    /**
+     * @return string
+     */
     public function getRelationModel() {
         return $this->_relationModel;
     }
