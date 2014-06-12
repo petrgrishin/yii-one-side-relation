@@ -22,9 +22,6 @@
         }
     },
     "autoload-dev": {
-        "psr-4": {
-            "PetrGrishin\\ArrayField\\": "src/"
-        },
         "files": [
             "vendor/yiisoft/yii/framework/YiiBase.php"
         ]
